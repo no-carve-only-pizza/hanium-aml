@@ -165,3 +165,14 @@ Useful quick test:
 python src/defense_jpeg.py --quality 75 --limit 100
 ```
 
+## ZOO attack baseline
+
+Run a small targeted ZOO-style black-box test first:
+
+```bash
+python src/targeted_zoo_face.py --epsilon 0.03 --max-queries 1000 --coords-per-iter 64 --learning-rate 0.01 --limit 20
+python src/summarize_face_attack.py
+```
+
+ZOO is query-heavy. Increase `--limit` only after the small run finishes cleanly.
+

@@ -63,6 +63,14 @@ def main() -> None:
             row["pixels_per_step"] = int(df["pixels_per_step"].iloc[0])
         if "changed_channels" in df.columns:
             row["avg_changed_channels"] = float(df["changed_channels"].mean())
+        if "coords_per_iter" in df.columns:
+            row["coords_per_iter"] = int(df["coords_per_iter"].iloc[0])
+        if "finite_diff_h" in df.columns:
+            row["finite_diff_h"] = float(df["finite_diff_h"].iloc[0])
+        if "learning_rate" in df.columns:
+            row["learning_rate"] = float(df["learning_rate"].iloc[0])
+        if "iterations" in df.columns:
+            row["avg_iterations"] = float(df["iterations"].mean())
         rows.append(row)
 
     summary = pd.DataFrame(rows).sort_values(["attack", "epsilon", "metadata_file"])

@@ -39,6 +39,10 @@ COMMON_COLUMNS = [
     "pixels_per_step",
     "max_queries",
     "queries_used",
+    "coords_per_iter",
+    "finite_diff_h",
+    "learning_rate",
+    "iterations",
     "l0",
     "l2",
     "linf",
@@ -62,6 +66,8 @@ def attack_family(path: Path, attack_name: str) -> str:
         return "square"
     if "jsma" in attack_name or "jsma" in path.parts:
         return "jsma"
+    if "zoo" in attack_name or "zoo" in path.parts:
+        return "zoo"
     return attack_name or path.parent.name
 
 
@@ -127,6 +133,10 @@ def normalize_metadata(path: Path) -> pd.DataFrame:
             "pixels_per_step": row.get("pixels_per_step", ""),
             "max_queries": row.get("max_queries", ""),
             "queries_used": row.get("queries_used", ""),
+            "coords_per_iter": row.get("coords_per_iter", ""),
+            "finite_diff_h": row.get("finite_diff_h", ""),
+            "learning_rate": row.get("learning_rate", ""),
+            "iterations": row.get("iterations", ""),
             "l0": row.get("l0", ""),
             "l2": row.get("l2", ""),
             "linf": row.get("linf", ""),
@@ -148,7 +158,7 @@ def main() -> None:
     parser.add_argument("--include-all-attack-dirs", action=argparse.BooleanOptionalAction, default=False)
     args = parser.parse_args()
 
-    face_attack_dirs = {"fgsm_face", "pgd_face", "square_face", "jsma_face"}
+    face_attack_dirs = {"fgsm_face", "pgd_face", "square_face", "jsma_face", "zoo_face"}
     paths = sorted(args.metadata_root.glob("**/metadata_*.csv"))
     paths = [path for path in paths if path.name != "metadata.csv"]
     if not args.include_all_attack_dirs:
