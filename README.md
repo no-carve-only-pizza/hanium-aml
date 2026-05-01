@@ -127,3 +127,19 @@ l0, l2, linf, time_sec, target_conf_gain
 
 Defense modules should use `adv_file` as input and keep `sample_id` when writing defense results so attack/defense metrics can be joined later.
 
+## Defense result template
+
+After building `outputs/attacks/attack_index.csv`, create a defense result template:
+
+```bash
+python src/create_defense_result_template.py
+```
+
+Output:
+
+```text
+outputs/defenses/defense_results_template.csv
+```
+
+Defense code should fill one row per defended adversarial image while preserving `sample_id` so attack and defense results can be joined later.
+
