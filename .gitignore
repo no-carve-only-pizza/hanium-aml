@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.pth
+*.pt
+*.h5
+data/
+datasets/
+checkpoints/
+.DS_Store
+.vscode/
