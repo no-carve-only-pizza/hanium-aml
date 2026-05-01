@@ -36,8 +36,15 @@ def make_panel(row: dict[str, str], out_path: Path) -> None:
     title_font = load_font(16)
     font = load_font(14)
 
+    attack_name = row.get("attack", "attack")
+    if row.get("epsilon") not in {None, ""}:
+        param_text = f"eps={row['epsilon']}"
+    elif row.get("theta") not in {None, ""}:
+        param_text = f"theta={row['theta']}"
+    else:
+        param_text = "params=n/a"
     title = (
-        f"{row.get('attack', 'attack')} eps={row['epsilon']} "
+        f"{attack_name} {param_text} "
         f"{row['true_name']} -> {row['target_name']} | pred: {row['pred_before_name']} -> {row['pred_after_name']}"
     )
     draw.text((pad, 10), title[:110], fill="black", font=title_font)
