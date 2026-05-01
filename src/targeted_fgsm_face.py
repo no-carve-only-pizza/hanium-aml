@@ -111,6 +111,10 @@ def main() -> None:
             target_conf_after = float(adv_probs[0, target_label].cpu())
         elapsed = time.perf_counter() - start
 
+        clean_correct = pred_before == true_label
+        target_success = pred_after == target_label
+        target_success_on_clean = clean_correct and target_success
+
         delta = adv - clean
         visible_delta = (delta / (2 * args.epsilon)) + 0.5
         l0, l2, linf = tensor_norms(delta)
@@ -128,7 +132,9 @@ def main() -> None:
             "perturbation_file": str(perturb_path),
             "attack": "targeted_fgsm",
             "epsilon": args.epsilon,
-            "success": pred_after == target_label,
+            "success": target_success,
+            "clean_correct": clean_correct,
+            "success_on_clean": target_success_on_clean,
             "true_label": true_label,
             "true_name": classes[true_label],
             "target_label": target_label,

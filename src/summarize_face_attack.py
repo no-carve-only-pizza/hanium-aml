@@ -8,6 +8,12 @@ from pathlib import Path
 import pandas as pd
 
 
+def bool_series(series: pd.Series) -> pd.Series:
+    if series.dtype == bool:
+        return series
+    return series.astype(str).str.lower().isin(["true", "1", "yes"])
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Summarize targeted face attack runs.")
     parser.add_argument("--metadata-dir", type=Path, default=Path("outputs/attacks"))
@@ -21,13 +27,19 @@ def main() -> None:
     rows = []
     for path in paths:
         df = pd.read_csv(path)
+        clean_correct = df["pred_before"] == df["true_label"] if "clean_correct" not in df else bool_series(df["clean_correct"])
+        success = bool_series(df["success"])
+        success_on_clean = clean_correct & success
+        clean_count = int(clean_correct.sum())
         row = {
             "metadata_file": str(path),
             "attack": df.get("attack", pd.Series([path.parent.name])).iloc[0],
             "epsilon": float(df["epsilon"].iloc[0]),
             "samples": len(df),
-            "target_success_rate": float(df["success"].mean()),
-            "clean_accuracy_on_subset": float((df["pred_before"] == df["true_label"]).mean()),
+            "clean_correct_samples": clean_count,
+            "target_success_rate_all": float(success.mean()),
+            "target_success_rate_on_clean": float(success_on_clean.sum() / clean_count) if clean_count else 0.0,
+            "clean_accuracy_on_subset": float(clean_correct.mean()),
             "avg_true_conf_before": float(df["true_conf_before"].mean()),
             "avg_true_conf_after": float(df["true_conf_after"].mean()),
             "avg_target_conf_before": float(df["target_conf_before"].mean()),
