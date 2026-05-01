@@ -9,3 +9,5 @@ datasets/
 checkpoints/
 .DS_Store
 .vscode/
+lfw/
+outputs/
