@@ -100,3 +100,30 @@ for eps in 0.005 0.010 0.030 0.050; do
 done
 ```
 
+## Attack output index for defense integration
+
+After running attacks in Colab, build one unified CSV for defense/web modules:
+
+```bash
+python src/build_attack_index.py
+```
+
+Output:
+
+```text
+outputs/attacks/attack_index.csv
+```
+
+Important columns:
+
+```text
+sample_id, attack, attack_family, file, adv_file, perturbation_file,
+success, clean_correct, success_on_clean,
+true_label, true_name, target_label, target_name,
+pred_before_name, pred_after_name,
+epsilon, theta, alpha, steps, max_queries, queries_used,
+l0, l2, linf, time_sec, target_conf_gain
+```
+
+Defense modules should use `adv_file` as input and keep `sample_id` when writing defense results so attack/defense metrics can be joined later.
+
