@@ -176,3 +176,19 @@ python src/summarize_face_attack.py
 
 ZOO is query-heavy. Increase `--limit` only after the small run finishes cleanly.
 
+## Representative attack samples
+
+After building `attack_index.csv`, select representative attack examples:
+
+```bash
+python src/select_representative_attacks.py
+python src/make_representative_panels.py
+```
+
+Outputs:
+
+```text
+outputs/attacks/representative_samples.csv
+outputs/attack_panels/representatives/
+```
+
