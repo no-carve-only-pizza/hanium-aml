@@ -53,6 +53,10 @@ def main() -> None:
             row["alpha"] = float(df["alpha"].iloc[0])
         if "steps" in df.columns:
             row["steps"] = int(df["steps"].iloc[0])
+        if "max_queries" in df.columns:
+            row["max_queries"] = int(df["max_queries"].iloc[0])
+        if "queries_used" in df.columns:
+            row["avg_queries_used"] = float(df["queries_used"].mean())
         rows.append(row)
 
     summary = pd.DataFrame(rows).sort_values(["attack", "epsilon", "metadata_file"])
