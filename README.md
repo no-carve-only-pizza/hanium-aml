@@ -192,3 +192,17 @@ outputs/attacks/representative_samples.csv
 outputs/attack_panels/representatives/
 ```
 
+## Compact attack summary
+
+Create a report-ready summary table from the full attack summary:
+
+```bash
+python src/make_compact_attack_summary.py
+```
+
+Output:
+
+```text
+outputs/attacks/compact_attack_summary.csv
+```
+
