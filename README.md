@@ -143,3 +143,25 @@ outputs/defenses/defense_results_template.csv
 
 Defense code should fill one row per defended adversarial image while preserving `sample_id` so attack and defense results can be joined later.
 
+## JPEG defense baseline
+
+Run JPEG recompression defense against attack-index rows:
+
+```bash
+python src/defense_jpeg.py --quality 75
+python src/summarize_defense.py
+```
+
+Outputs:
+
+```text
+outputs/defenses/jpeg/jpeg_results_q75.csv
+outputs/defenses/defense_summary.csv
+```
+
+Useful quick test:
+
+```bash
+python src/defense_jpeg.py --quality 75 --limit 100
+```
+
