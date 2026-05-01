@@ -34,7 +34,7 @@ def main() -> None:
         row = {
             "metadata_file": str(path),
             "attack": df.get("attack", pd.Series([path.parent.name])).iloc[0],
-            "epsilon": float(df["epsilon"].iloc[0]),
+            "epsilon": float(df["epsilon"].iloc[0]) if "epsilon" in df.columns else None,
             "samples": len(df),
             "clean_correct_samples": clean_count,
             "target_success_rate_all": float(success.mean()),
@@ -57,6 +57,12 @@ def main() -> None:
             row["max_queries"] = int(df["max_queries"].iloc[0])
         if "queries_used" in df.columns:
             row["avg_queries_used"] = float(df["queries_used"].mean())
+        if "theta" in df.columns:
+            row["theta"] = float(df["theta"].iloc[0])
+        if "pixels_per_step" in df.columns:
+            row["pixels_per_step"] = int(df["pixels_per_step"].iloc[0])
+        if "changed_channels" in df.columns:
+            row["avg_changed_channels"] = float(df["changed_channels"].mean())
         rows.append(row)
 
     summary = pd.DataFrame(rows).sort_values(["attack", "epsilon", "metadata_file"])
