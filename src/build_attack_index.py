@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -150,6 +151,12 @@ def normalize_metadata(path: Path) -> pd.DataFrame:
     return pd.DataFrame(rows, columns=COMMON_COLUMNS)
 
 
+def is_smoke_test_metadata(path: Path) -> bool:
+    """Exclude tiny smoke-test metadata without dropping real query sweeps."""
+    name = path.stem
+    return bool(re.search(r"(^|_)queries20($|_)", name) or re.search(r"(^|_)steps3($|_)", name))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build unified attack_index.csv.")
     parser.add_argument("--metadata-root", type=Path, default=Path("outputs/attacks"))
@@ -164,7 +171,7 @@ def main() -> None:
     if not args.include_all_attack_dirs:
         paths = [path for path in paths if path.parent.name in face_attack_dirs]
     if not args.include_smoke_tests:
-        paths = [path for path in paths if not ("queries20" in path.name or "steps3" in path.name)]
+        paths = [path for path in paths if not is_smoke_test_metadata(path)]
     if not paths:
         raise FileNotFoundError(f"No metadata CSV files found under {args.metadata_root}")
 
